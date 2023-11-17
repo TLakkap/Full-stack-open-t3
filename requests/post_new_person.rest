@@ -1,7 +1,8 @@
-POST http://localhost:3001/api/persons
+//POST http://localhost:3001/api/persons
+POST https://phonebook-yxho.onrender.com/api/persons
 Content-Type: application/json
 
 {
-    "name": "Hessu Hopo",
+    "name": "Iines Ankka",
     "number": "0401122334"
 }
