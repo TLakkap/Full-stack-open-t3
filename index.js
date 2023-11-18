@@ -47,9 +47,10 @@ app.get('/api/persons/:id', (req, res, next) => {
 })
 
 app.get('/info', (req, res) => {
-    const length = persons.length
-    const date = Date()
-    res.send('<p>Phonebook has info for ' + length + ' people</p><p>' + date + '</p>')
+    Person.find({})
+        .then(persons => {
+            res.send(`<p>Phonebook has info for ${persons.length} people</p><p>${Date()}</p>`)
+        })
 })
 
 app.delete('/api/persons/:id', (req, res, next) => {
