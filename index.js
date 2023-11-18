@@ -56,11 +56,13 @@ app.get('/info', (req, res) => {
     res.send('<p>Phonebook has info for ' + length + ' people</p><p>' + date + '</p>')
 })
 
-app.delete('/api/persons/:id', (req, res) => {
-    const id = Number(req.params.id)
-    persons = persons.filter(note => note.id !== id)
-
-    res.status(204).end()
+app.delete('/api/persons/:id', (req, res, next) => {
+    Person.findByIdAndDelete(req.params.id)
+        .then(result => {
+            res.status(204).end()
+        })
+        .catch(error => 
+            next(error))
 })
 
 /* const generateId = () => {
