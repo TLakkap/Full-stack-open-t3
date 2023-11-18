@@ -15,7 +15,7 @@ morgan.token('requestData', (req) => {
 
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :requestData'))
 
-let persons = [
+/* let persons = [
     {
       name: "Arto Hellas",
       number: "040-123456",
@@ -36,7 +36,7 @@ let persons = [
       number: "39-23-6423122",
       id: 4
     }
-  ]
+  ] */
 
 app.get('/api/persons', (req, res) => {
     Person.find({}).then(persons => {
@@ -45,14 +45,9 @@ app.get('/api/persons', (req, res) => {
 })
 
 app.get('/api/persons/:id', (req, res) => {
-    const id = Number(req.params.id)
-    const person = persons.find(person => person.id === id)
-
-    if(person) {
+    Person.findById(req.params.id).then(person => {
         res.json(person)
-    } else {
-        res.status(404).end()
-    }
+    })
 })
 
 app.get('/info', (req, res) => {
@@ -68,14 +63,14 @@ app.delete('/api/persons/:id', (req, res) => {
     res.status(204).end()
 })
 
-const generateId = () => {
+/* const generateId = () => {
     return Math.floor(Math.random() * 1000);
-}
+} */
 
 app.post('/api/persons', (req, res) => {
     const body = req.body
     
-    const nameIndex = persons.findIndex(person => person.name === body.name)   
+    /* const nameIndex = persons.findIndex(person => person.name === body.name)   
 
     if(!body.name) {
         return res.status(400).json({
@@ -89,17 +84,16 @@ app.post('/api/persons', (req, res) => {
         return res.status(400).json({
             error: 'name must be unique'
         })
-    }
+    } */
     
-    const person = {
+    const person = new Person({
         name: body.name,
         number: body.number,
-        id: generateId(),
-    }
+    })
 
-    persons = persons.concat(person)
-
-    res.json(person)
+    person.save().then(savedPerson => {
+        res.json(savedPerson)
+    })
 })
 
 const PORT = process.env.PORT
