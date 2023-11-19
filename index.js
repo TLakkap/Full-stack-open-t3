@@ -96,7 +96,7 @@ app.put('/api/persons/:id', (req, res, next) => {
       if(updatedPerson !== null){
         res.json(updatedPerson)
       } else {
-        error => next(error)
+        next(error)
       }
     })
     .catch(error => next(error))
